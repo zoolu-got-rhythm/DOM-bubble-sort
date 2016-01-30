@@ -78,28 +78,50 @@ console.log(result.sort());
 
 
 
-var visual = function(){
+var visual = (function(){
 
-  var switch = true;
+  var knob = true,
+      parent;
 
   return {
 
-  barChart: function(arr, current){
-      var bars = [];
-      if(switch){
-        var parent = document.createElement("div");
-        document.appendChild(parent);
-      }
-      switch = false;
+    barChart: function(arr, current){
+        var bars = [];
 
-      for (var i = 0; i < arr.length; i++) {
-        bars.push(arr[i] * 5);
-        var bar = document.createElement("div");
-        parent.appendChild(bar)
-      }
+        // refresh children of parent
+        if(!knob) {
+          while(parent.firstChild){
+            parent.removeChild(parent.firstChild);
+          }
+        }
+        // create 1 parent
+        if(knob){
+          parent = document.createElement("div");
+          parent.style.background = "#eee";
+          parent.style.width = "200px";
+          parent.style.height = "100px";
+          document.body.appendChild(parent);
+          console.log("parent created");
+        }
+        knob = false;
+
+        // create and refresh children
+        for (var i = 0; i < arr.length; i++) {
+          bars.push(arr[i] * 5);
+          var bar = document.createElement("div");
+          bar.style.width = "5px";
+          bar.style.height = bars[i] + "px";
+          bar.style.background = "#ccc";
+          bar.style.float = "left";
+          parent.appendChild(bar);
+        }
 
 
-      parent.childNodes[current].style.height = bars[arr[i]] + "px";
+        // parent.childNodes[current].style.height = bars[arr[i]] + "px";
+    },
+
+    graph: function(){
+      // canvas view
+    }
   }
-}
-}
+})();
