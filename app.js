@@ -2,34 +2,36 @@
 then worry about the view and map
 map to console then to dom  */
 
+// sort module (using module pattern)
 function bubble(a){
   // private var's
-  var a,
-      temp;
+  var temp;
 
   return {
     // bubble sort through an array
     sort: function() {
 
       var i = 0;
+      document.body.innerHTML = a;
 
       var sorting = window.setInterval(function(){
 
-      i++;
-      // update visual every few millasecs.
-      visual.barChart(a);
+        i++;
+        // update view every few millasecs.
+        visual.barChart(a);
+        visual.graph(a);
 
-      for (var j = 0; j < a.length; j++) {
-        if (a[j] > a[j + 1]) {
-           temp = a[j];
-           // swap(bubble)
-           a[j] = a[j + 1];
-           a[j + 1] = temp;
+        for (var j = 0; j < a.length; j++) {
+          if (a[j] > a[j + 1]) {
+             temp = a[j];
+             // swap(bubble)
+             a[j] = a[j + 1];
+             a[j + 1] = temp;
+          }
         }
-      }
 
-      console.log(a);
-      if(i === a.length) stopTimer(sorting);
+        console.log(a);
+        if(i === a.length) stopTimer(sorting);
 
     }, 300 );
 
@@ -59,28 +61,11 @@ console.log(result.plain());
 console.log(result.sort());
 
 
-
-
-
-// function visual(arr, current){
-    // map parsed array to a new array, do i need to map?
-    // var mapped = old.map(function());
-  //   var bars = [];
-  //
-  //   for (var i = 0; i < mapped.length; i++) {
-  //     bars.push(i*5);
-  //   }
-  //
-  //   parent.childNodes[current].style.height = bars[arr[i]] + "px";
-  // }
-
-
-
-
-
+// visual module (using module pattern)
 var visual = (function(){
 
   var knob = true,
+      knob2 = true,
       parent;
 
   return {
@@ -98,12 +83,13 @@ var visual = (function(){
         if(knob){
           parent = document.createElement("div");
           parent.style.background = "#eee";
-          parent.style.width = "200px";
-          parent.style.height = "100px";
+          parent.style.width = arr.length * 5 + "px";
+          parent.style.height = arr.length * 5 + "px";
           document.body.appendChild(parent);
           console.log("parent created");
+          knob = false;
         }
-        knob = false;
+
 
         // create and refresh children
         for (var i = 0; i < arr.length; i++) {
@@ -116,12 +102,20 @@ var visual = (function(){
           parent.appendChild(bar);
         }
 
-
         // parent.childNodes[current].style.height = bars[arr[i]] + "px";
     },
 
-    graph: function(){
+    graph: function(arr){
       // canvas view
+      if(knob2){
+        var c = document.createElement("canvas");
+        var ctx = c.getContext("2d");
+        c.width = arr.length * 5;
+        c.height = 200;
+        c.style.background = "#eee";
+        document.body.appendChild(c);
+        knob2 = false;
+      }
     }
   }
 })();
