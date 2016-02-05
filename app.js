@@ -116,6 +116,8 @@ var visual = (function(){
         document.body.appendChild(c);
         knob2 = false;
       }
+
+
     }
   }
 })();
